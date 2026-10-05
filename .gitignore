@@ -1,0 +1,10 @@
+.venv/
+.venv-build/
+.venv-linux/
+__pycache__/
+.pytest_cache/
+*.egg-info/
+build/
+dist/
+*.wordcard
+output/

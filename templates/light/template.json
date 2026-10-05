@@ -1,0 +1,124 @@
+{
+  "size": [
+    1080,
+    1350
+  ],
+  "fonts": {
+    "title": "NanumMyeongjoBold.ttf",
+    "body": "NanumGothic.ttf",
+    "verse": "NanumMyeongjo.ttf"
+  },
+  "cards": {
+    "cover": {
+      "title": {
+        "box": [
+          100,
+          380,
+          880,
+          340
+        ],
+        "size": [
+          96,
+          60
+        ]
+      },
+      "subtitle": {
+        "box": [
+          100,
+          780,
+          880,
+          230
+        ],
+        "size": [
+          36,
+          26
+        ]
+      }
+    },
+    "body": {
+      "text": {
+        "box": [
+          100,
+          240,
+          880,
+          810
+        ],
+        "size": [
+          56,
+          36
+        ]
+      }
+    },
+    "verse": {
+      "text": {
+        "box": [
+          120,
+          280,
+          840,
+          690
+        ],
+        "size": [
+          52,
+          34
+        ]
+      },
+      "ref": {
+        "box": [
+          120,
+          1040,
+          840,
+          90
+        ],
+        "size": [
+          32,
+          26
+        ],
+        "align": "right"
+      }
+    },
+    "ending": {
+      "text": {
+        "box": [
+          100,
+          380,
+          880,
+          400
+        ],
+        "size": [
+          60,
+          40
+        ]
+      },
+      "message": {
+        "box": [
+          100,
+          890,
+          880,
+          200
+        ],
+        "size": [
+          32,
+          26
+        ]
+      }
+    }
+  },
+  "footer": {
+    "box": [
+      80,
+      1210,
+      920,
+      60
+    ],
+    "size": [
+      26,
+      22
+    ]
+  },
+  "name": "밝은 미니멀",
+  "colors": {
+    "background": "#F7F3EC",
+    "text": "#2B2B2B",
+    "accent": "#8A6D3B"
+  }
+}
