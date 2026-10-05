@@ -154,8 +154,6 @@ iscc packaging/windows.iss      # Inno Setup 6 → dist/installer/WordCard-Setup
 
 카드 생성·편집·저장 엔진과 GUI는 자동 테스트와 Linux 빌드로 검증했습니다. 아래 항목은 아직 확인하지 않았으니, 운영 계정에 쓰기 전에 테스트 계정으로 먼저 확인하세요.
 
-- Windows 설치본을 실제 PC에 설치해 실행
-- Meta·ImgBB 실제 게시
 - macOS 키체인 연동
 
 ## 기획 문서
