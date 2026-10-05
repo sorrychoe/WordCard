@@ -7,6 +7,7 @@ name = "wordcard"
 version = "0.1.0"
 description = "교회를 위한 오프라인 말씀카드 생성기"
 requires-python = ">=3.12"
+license = {text = "MIT"}
 dependencies = ["Pillow>=11,<13", "PySide6>=6.8,<7", "keyring>=25,<26"]
 
 [project.optional-dependencies]

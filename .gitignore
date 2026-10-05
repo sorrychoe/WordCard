@@ -8,8 +8,6 @@ build/
 dist/
 *.wordcard
 output/
-
-# 비밀·로컬 설정 (공개 저장소에 올리지 않음)
 .env
 .env.*
 *.log
@@ -17,8 +15,6 @@ settings.json
 publication.json
 *.pem
 *.key
-
-# 편집기·OS·도구 산출물
 .vscode/
 .idea/
 .DS_Store

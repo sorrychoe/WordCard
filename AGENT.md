@@ -317,7 +317,7 @@
 | 언어 | Python 3.12 | 이미지 처리 라이브러리가 풍부하고 유지보수 인력 구하기 쉬움 |
 | GUI | **PySide6 (Qt)** | 네이티브 데스크톱 UI, Windows/macOS 지원, LGPL. 웹 기술 미사용 |
 | 이미지 생성 | **Pillow** | 텍스트·이미지 합성, 한글 폰트 렌더링 |
-| 폰트 | 나눔고딕, 나눔명조 (번들), Noto KR로 교체 가능 | SIL OFL. 개발 환경의 다운로드 제한으로 확보 가능한 나눔 글꼴을 기본 제공하고 PC별 동일한 한글 출력을 보장 |
+| 폰트 | 나눔고딕, 나눔명조 (번들), Noto KR로 교체 가능 | SIL OFL. 글꼴을 번들해 PC별로 동일한 한글 출력을 보장 |
 | HTTP 통신 | Python 표준 `urllib.request` | Graph API·ImgBB 호출은 단순 POST/GET이라 별도 라이브러리 불필요 |
 | 비밀 저장 | **keyring** | 토큰·API 키를 OS 자격 증명 저장소에 보관 (평문 파일 저장 금지) |
 | 패키징 | PyInstaller (+ Windows는 Inno Setup 설치 파일) | Python 미설치 PC에서 실행 |

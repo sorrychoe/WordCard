@@ -18,7 +18,7 @@ Windows 배포본의 `WordCard-Setup.exe`를 설치하거나 `WordCard-Windows.z
 
 ## 개발 실행
 
-Python 3.12 이상을 사용합니다. 개발언어를 Python으로 제한할 필요는 없지만, 이 구현은 기획서의 네이티브 UI·이미지 처리 요구에 맞는 기존 기술 선택을 유지합니다.
+Python 3.12 이상을 사용합니다.
 
 ```sh
 python -m venv .venv
@@ -29,7 +29,7 @@ python -m pip install -e ".[dev]"
 python -m wordcard
 ```
 
-글꼴 3개와 라이선스는 `fonts/`에 포함되어 있습니다. 다운로드가 제한된 환경에서도 동일한 한글 결과를 얻기 위해 기본 글꼴을 나눔고딕·나눔명조로 정하고 AGENT.md에 반영했습니다. 템플릿의 글꼴 파일명을 바꿔 다른 OFL 글꼴을 사용할 수도 있습니다.
+글꼴 3개와 라이선스는 `fonts/`에 포함되어 있어 어느 PC에서나 같은 한글 결과가 나옵니다. 템플릿의 글꼴 파일명을 바꿔 다른 OFL 글꼴을 사용할 수도 있습니다.
 
 GUI 없이 생성하기:
 
@@ -37,7 +37,7 @@ GUI 없이 생성하기:
 python -m wordcard --text 내설교.txt --output output --template light --ratio 4:5
 ```
 
-글 파일은 UTF-8로 저장합니다. 실제 성경 본문은 배포하지 않습니다. `AGENT.md`의 4.1절 예시는 문단 규칙에 따라 **4장**이 되므로 개발 단계의 기존 6장 기준을 바로잡았습니다.
+글 파일은 UTF-8로 저장합니다. 성경 본문 데이터는 저작권 문제로 포함하지 않으며, 구절은 사용자가 직접 입력합니다.
 
 ## 테스트
 
@@ -78,7 +78,7 @@ python -m PyInstaller --noconfirm packaging/wordcard.spec
 iscc packaging/windows.iss
 ```
 
-마지막 단계에는 Inno Setup 6이 필요합니다. `dist/WordCard/` 전체가 포터블 배포본이며 `dist/installer/WordCard-Setup.exe`가 설치본입니다. `.github/workflows/windows.yml`은 수동 실행 또는 버전 태그 push 시 테스트, 빌드, 설치본 200MB 제한 확인, 아티팩트 보관을 수행합니다. 이 저장소에서 워크플로를 원격 실행하지는 않았습니다.
+마지막 단계에는 Inno Setup 6이 필요합니다. `dist/WordCard/` 전체가 포터블 배포본이며 `dist/installer/WordCard-Setup.exe`가 설치본입니다. `.github/workflows/windows.yml`은 수동 실행 또는 버전 태그 push 시 테스트, 빌드, 설치본 200MB 제한 확인, 아티팩트 보관을 수행합니다.
 
 배포 전에 깨끗한 Windows 10/11 PC에서 오프라인 실행·한글 출력·자격 증명 저장·복구를 확인해야 합니다. macOS는 해당 OS에서 PyInstaller 빌드 및 키체인 검증이 필요합니다. 서명·공증은 포함하지 않았습니다.
 
@@ -98,5 +98,7 @@ iscc packaging/windows.iss
 엔진·API 모의 테스트 결과는 [개발 검증 기록](docs/검증.md)에 기재합니다. 실제 Meta/ImgBB 게시, Windows 설치와 일반 사무용 PC 성능, 2~4주 시범 운영은 별도 검증이 필요합니다. API 버전은 `uploader.py`의 `GRAPH`에서 관리합니다. 실제 계정 검증 전에는 운영 배포로 간주하지 마세요.
 
 ## 라이선스
+
+소스 코드: MIT License (`LICENSE`).
 
 나눔 글꼴: NAVER, SIL OFL 1.1 (`fonts/OFL-Nanum.txt`). PySide6/Qt는 LGPLv3에 따른 동적 라이브러리 형태로 패키징합니다. 배포자는 Qt 및 다른 의존성의 라이선스 고지·소스 제공 의무를 확인해야 합니다.
