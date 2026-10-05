@@ -5,7 +5,7 @@ on:
     branches: [main]
     tags: ['v*']
 permissions:
-  contents: read
+  contents: write  
 jobs:
   package:
     runs-on: windows-latest
@@ -19,7 +19,14 @@ jobs:
         env:
           QT_QPA_PLATFORM: offscreen
       - run: python -m PyInstaller --noconfirm packaging/wordcard.spec
-      - run: iscc packaging/windows.iss
+      - name: Build installer
+        shell: pwsh
+        run: |
+          if (-not (Get-Command iscc -ErrorAction SilentlyContinue)) { choco install innosetup --no-progress -y }
+          $iscc = (Get-Command iscc -ErrorAction SilentlyContinue).Source
+          if (-not $iscc) { $iscc = "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe" }
+          & $iscc packaging/windows.iss
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
       - shell: pwsh
         run: |
           $installer = Get-Item dist/installer/WordCard-Setup.exe
@@ -29,5 +36,12 @@ jobs:
         with:
           name: WordCard-Windows
           path: |
+            dist/WordCard-Windows.zip
+            dist/installer/WordCard-Setup.exe
+      - name: Publish release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
             dist/WordCard-Windows.zip
             dist/installer/WordCard-Setup.exe
