@@ -83,13 +83,13 @@ class CoreTests(unittest.TestCase):
             path = Path(directory) / '작업.wordcard'
             save_project(path, project)
             self.assertEqual(load_project(path), project)
-            data = json.loads(path.read_text())
+            data = json.loads(path.read_text(encoding='utf-8'))
             self.assertNotIn('token', data)
             data['cards'][0]['type'] = 'invalid'
             atomic_json(path, data)
             with self.assertRaisesRegex(ValueError, '형식'):
                 load_project(path)
-            path.write_text('{bad')
+            path.write_text('{bad', encoding='utf-8')
             with self.assertRaises(ValueError):
                 load_project(path)
 
