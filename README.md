@@ -140,7 +140,7 @@ python -m PyInstaller --noconfirm packaging/wordcard.spec
 iscc packaging/windows.iss      # Inno Setup 6 → dist/installer/WordCard-Setup.exe
 ```
 
-`.github/workflows/windows.yml`은 `v*` 태그를 push하거나 수동으로 실행하면 돌아갑니다. 테스트, 빌드, 설치본 200MB 제한 확인을 거쳐 아티팩트를 업로드합니다.
+`.github/workflows/windows.yml`은 `main` 브랜치나 `v*` 태그에 push하거나 수동으로 실행하면 돌아갑니다. 테스트, 빌드, 설치본 200MB 제한 확인을 거쳐 아티팩트를 업로드합니다.
 
 ## 데이터 저장 위치
 
