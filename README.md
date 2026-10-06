@@ -158,7 +158,7 @@ iscc packaging/windows.iss      # Inno Setup 6 → dist/installer/WordCard-Setup
 
 ## 기획 문서
 
-요구사항, 화면 설계, 기술 결정은 [AGENT.md](AGENT.md)에 정리되어 있습니다.
+요구사항, 화면 설계, 기술 결정은 [AGENTS.md](AGENTS.md)에 정리되어 있습니다.
 
 ## 라이선스
 
