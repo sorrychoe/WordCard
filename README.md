@@ -76,7 +76,7 @@ python -m wordcard --text docs/사용_예시.txt --output output --template ligh
 | 이미지 생성 | Pillow |
 | 비밀 저장 | keyring (Windows 자격 증명 관리자, macOS 키체인, Linux Secret Service) |
 | HTTP | 표준 라이브러리 `urllib` (추가 의존성 없음) |
-| 패키징 | PyInstaller, Inno Setup, GitHub Actions |
+| 패키징 | PyInstaller, GitHub Actions |
 | 테스트 | pytest / unittest |
 
 ## 구조
@@ -129,18 +129,22 @@ PYTHONPATH=src python -m unittest discover -s tests -v   # pytest 없이 실행
 
 | 명령 | 내용 |
 |------|------|
-| `make build` | PyInstaller로 현재 OS용 실행 폴더를 `dist/WordCard/`에 만듭니다 |
-| `make package` | 실행 폴더를 `dist/WordCard-<OS>-<아키텍처>.tar.gz`로 묶습니다 |
+| `make build` | PyInstaller로 현재 OS용 단일 실행 파일을 `dist/`에 만듭니다 (Windows: `WordCard.exe`) |
+| `make package` | 실행 파일을 `dist/WordCard-<OS>-<아키텍처>.tar.gz`로 묶습니다 |
 | `make clean` | 빌드 캐시를 지웁니다 (가상환경과 배포본은 유지) |
 
-Windows 설치본은 Windows에서 만들어야 합니다. PyInstaller는 다른 OS용으로 교차 빌드하지 않습니다.
+Windows 실행 파일은 Windows에서 만들어야 합니다. PyInstaller는 다른 OS용으로 교차 빌드하지 않습니다. 설치 프로그램 없이 `WordCard.exe` 하나로 배포합니다.
 
 ```powershell
-python -m PyInstaller --noconfirm packaging/wordcard.spec
-iscc packaging/windows.iss      # Inno Setup 6 → dist/installer/WordCard-Setup.exe
+python -m PyInstaller --noconfirm packaging/wordcard.spec   # → dist/WordCard.exe
 ```
 
-`.github/workflows/windows.yml`은 `main` 브랜치나 `v*` 태그에 push하거나 수동으로 실행하면 돌아갑니다. 테스트, 빌드, 설치본 200MB 제한 확인을 거쳐 아티팩트를 업로드합니다.
+`main` 푸시·PR 시 GitHub Actions(`.github/workflows/windows.yml`)가 테스트, 빌드, 실행 파일 200MB 제한 확인을 거쳐 아티팩트를 업로드합니다. 릴리스는 버전 태그를 푸시할 때 생성됩니다.
+
+```sh
+git tag v0.1.0
+git push origin v0.1.0   # → Releases에 v0.1.0 생성, WordCard.exe 첨부
+```
 
 ## 데이터 저장 위치
 

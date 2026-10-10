@@ -49,6 +49,7 @@ class Settings:
     ending: bool = True
     ending_phrase: str = "저장하고 묵상하세요"
     page_numbers: bool = True
+    indent: bool = False
     caption: str = ""
     hashtags: str = "#주일설교 #말씀"
     ig_id: str = ""

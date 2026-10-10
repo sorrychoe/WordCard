@@ -9,6 +9,7 @@ from .parser import Card
 from .settings import ROOT
 
 PUNCTUATION = '.,!?)」』，。！？、:;”’'
+INDENT = '\u3000'  # 전각 공백: 글자 한 칸 너비의 들여쓰기
 
 
 def templates() -> dict:
@@ -23,8 +24,8 @@ def templates() -> dict:
     return result
 
 
-def prepare_template(template: dict, ratio: str, overrides: dict | None = None) -> dict:
-    """원본을 복사해 비율별 안전 여백과 사용자 색상·배경을 적용한다."""
+def prepare_template(template: dict, ratio: str, overrides: dict | None = None, indent: bool = False) -> dict:
+    """원본을 복사해 비율별 안전 여백, 사용자 색상·배경과 본문 들여쓰기를 적용한다."""
     result = deepcopy(template)
     if ratio not in ("4:5", "1:1"):
         raise ValueError("지원하지 않는 카드 비율입니다.")
@@ -40,6 +41,10 @@ def prepare_template(template: dict, ratio: str, overrides: dict | None = None) 
     if overrides:
         result["colors"].update(overrides.get("colors", {}))
         result["background"] = overrides.get("background", "")
+    if indent:
+        # 가운데 정렬에서는 들여쓰기가 보이지 않으므로 왼쪽 정렬로 바꾼다.
+        for kind in ("body", "verse"):
+            result["cards"][kind]["text"].update(indent=True, align="left")
     return result
 
 
@@ -57,17 +62,17 @@ def font_name(template: dict, kind: str) -> str:
     return template["fonts"]["title" if kind == "cover" else "verse" if kind == "verse" else "body"]
 
 
-def wrap(text: str, face, width: int) -> list[str]:
-    """어절 우선으로 줄을 나누며 긴 어절만 쪼개고 줄 첫 문장부호를 피한다."""
+def wrap(text: str, face, width: int, indent: bool = False) -> list[str]:
+    """어절 우선으로 줄을 나누며 긴 어절만 쪼개고 줄 첫 문장부호를 피한다. indent면 문단 첫 줄을 한 칸 들인다."""
     lines = []
     for paragraph in text.split("\n"):
-        line = ""
+        line = INDENT if indent and paragraph.strip() else ""
         for word in paragraph.split():
-            candidate = f"{line} {word}" if line else word
+            candidate = f"{line} {word}" if line.strip() else line + word
             if face.getlength(candidate) <= width:
                 line = candidate
                 continue
-            if line:
+            if line.strip():
                 # Move the last character with leading punctuation; never exceed the box.
                 if word[0] in PUNCTUATION:
                     carry = line[-1]
@@ -99,12 +104,12 @@ def fit(text: str, filename: str, spec: dict):
     width, height = spec["box"][2:]
     for size in range(maximum, minimum - 1, -2):
         face = font(filename, size)
-        lines = wrap(text, face, width)
+        lines = wrap(text, face, width, spec.get("indent", False))
         spacing = sum(face.getmetrics()) + round(size * .18)
         if len(lines) * spacing <= height and all(face.getlength(line) <= width for line in lines):
             return face, lines, spacing
     face = font(filename, minimum)
-    lines = wrap(text, face, width)
+    lines = wrap(text, face, width, spec.get("indent", False))
     spacing = sum(face.getmetrics()) + round(minimum * .18)
     if len(lines) * spacing <= height and all(face.getlength(line) <= width for line in lines):
         return face, lines, spacing
