@@ -32,11 +32,13 @@ def main():
         except (OSError, ValueError) as exc:
             parser.exit(1, f"카드를 만들지 못했습니다: {exc}\n")
     from PySide6.QtCore import QLibraryInfo, QLocale, QTranslator
-    from PySide6.QtGui import QFont
+    from PySide6.QtGui import QFont, QIcon
     from PySide6.QtWidgets import QApplication, QMessageBox
     from .ui.main_window import MainWindow
     application = QApplication(sys.argv[:1])
     application.setApplicationName("말씀카드")
+    from .settings import ROOT
+    application.setWindowIcon(QIcon(str(ROOT / "packaging/wordcard.ico")))
     application.setFont(QFont("맑은 고딕" if sys.platform == "win32" else "Sans Serif", 11))
     translator = QTranslator(application)
     translator.load(QLocale("ko_KR"), "qtbase", "_", QLibraryInfo.path(QLibraryInfo.LibraryPath.TranslationsPath))

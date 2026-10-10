@@ -84,6 +84,10 @@ class MainWindow(QMainWindow):
         self.ratio = QComboBox()
         self.ratio.addItems(["4:5", "1:1"])
         left_layout.addWidget(self.ratio)
+        self.indent = QCheckBox("문단 첫 줄 들여쓰기 (왼쪽 정렬)")
+        self.indent.setChecked(self.settings.indent)
+        self.indent.toggled.connect(self.toggle_indent)
+        left_layout.addWidget(self.indent)
         self.template_box.currentIndexChanged.connect(self.change_design)
         self.ratio.currentTextChanged.connect(self.change_design)
         button("카드 만들기 (Ctrl+Enter)", self.generate, left_layout)
@@ -173,7 +177,7 @@ class MainWindow(QMainWindow):
     def current_template(self):
         """현재 선택한 비율과 교회 설정을 반영한 템플릿 사본을 반환한다."""
         key = self.template_box.currentData()
-        return prepare_template(self.templates[key], self.ratio.currentText(), self.settings.overrides.get(key))
+        return prepare_template(self.templates[key], self.ratio.currentText(), self.settings.overrides.get(key), self.settings.indent)
 
     def source_changed(self):
         """원문 변경을 작업에 반영하고 선택적으로 지연 카드 생성을 예약한다."""
@@ -299,6 +303,15 @@ class MainWindow(QMainWindow):
             self.edit_timer.stop()
         return self.edit_card()
 
+    def toggle_indent(self, checked):
+        """들여쓰기 선택을 설정에 기억하고 카드를 다시 만든다."""
+        self.settings.indent = checked
+        try:
+            save_settings(self.settings)
+        except OSError:
+            pass  # 기억하지 못해도 이번 작업에는 적용된다
+        self.change_design()
+
     def change_design(self, *args):
         """수동 수정 내용을 유지하며 모양을 바꾸고 실패하면 이전 선택으로 되돌린다."""
         if self.loading:
@@ -345,7 +358,7 @@ class MainWindow(QMainWindow):
         if project.template not in self.templates:
             raise ValueError("이 작업의 템플릿이 없습니다. 해당 템플릿 폴더를 추가해 주세요.")
         # Validate all images before replacing the current work.
-        template = prepare_template(self.templates[project.template], project.ratio, self.settings.overrides.get(project.template))
+        template = prepare_template(self.templates[project.template], project.ratio, self.settings.overrides.get(project.template), self.settings.indent)
         images = [render(c, template, self.settings, i, len(project.cards)) for i, c in enumerate(project.cards, 1)]
         self.loading = True
         self.edit_timer.stop()

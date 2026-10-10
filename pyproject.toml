@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "wordcard"
-version = "0.1.0"
+version = "0.2.0"
 description = "교회를 위한 오프라인 말씀카드 생성기"
 requires-python = ">=3.12"
 license = {text = "MIT"}

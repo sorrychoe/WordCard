@@ -6,7 +6,7 @@ from unittest.mock import patch
 from PIL import Image
 from wordcard.bible_books import BOOKS
 from wordcard.exporter import export_png
-from wordcard.layout import fit, font, font_name, paginate, prepare_template, templates, text_spec, wrap, PUNCTUATION
+from wordcard.layout import fit, font, font_name, paginate, prepare_template, templates, text_spec, wrap, INDENT, PUNCTUATION
 from wordcard.parser import Card, parse
 from wordcard.project import Project, load_project, save_project
 from wordcard.renderer import render
@@ -51,6 +51,18 @@ class CoreTests(unittest.TestCase):
         self.assertTrue(all(c.text.endswith('.') and fit(c.text, font_name(template, c.type), text_spec(template, c.type)) for c in cards))
         with self.assertRaisesRegex(ValueError, '한 문장'):
             paginate([Card('body', '가' * 3000)], template)
+
+    def test_indent(self):
+        """들여쓰기를 켜면 본문·구절이 왼쪽 정렬되고 문단 첫 줄만 한 칸 들어가는지 검증한다."""
+        template = prepare_template(templates()['light'], '4:5', indent=True)
+        self.assertEqual(text_spec(template, 'body')['align'], 'left')
+        self.assertNotIn('indent', text_spec(template, 'cover'))
+        face = font(template['fonts']['body'], 36)
+        lines = wrap('하루를 돌아보며 감사하는 마음을 가집니다.\n둘째 문단', face, 300, indent=True)
+        starts = [line.startswith(INDENT) for line in lines]
+        self.assertEqual(starts, [True] + [False] * (len(lines) - 2) + [True])
+        self.assertTrue(all(face.getlength(line) <= 300 for line in lines))
+        render(Card('body', '하루를 돌아보며 감사합니다.\n둘째 문단입니다.'), template, Settings())
 
     def test_render_export_and_ratios(self):
         """모든 템플릿·비율의 출력 크기, 안전 여백과 저장 픽셀 일치를 검증한다."""
